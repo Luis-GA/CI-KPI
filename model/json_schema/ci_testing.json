@@ -1,0 +1,313 @@
+{
+  "type": "object",
+  "properties": {
+    "startDate": {
+      "type": "integer",
+      "minimum": 1698087500,
+      "maximum": 3698087500,
+      "description": "The start execution date in Unix Timestamp format."
+    },
+    "endDate": {
+      "type": "integer",
+      "minimum": 1698087500,
+      "maximum": 3698087500,
+      "description": "The end execution date in Unix Timestamp format."
+    },
+    "project": {
+      "type": "string",
+      "description": "The project id where it is executed."
+    },
+    "commitId": {
+      "type": "string",
+      "pattern": "[0-9a-f]{5,40}",
+      "description": "The commit id of the code tested."
+    },
+    "branch": {
+      "type": "string",
+      "description": "The branch id of the code tested.",
+      "minLength": 1
+    },
+    "testName": {
+      "type": "string",
+      "description": "Test name."
+    },
+    "determinist": {
+      "type": "boolean",
+      "description": "Determinist test or not Determinist."
+    },
+    "testType": {
+      "type": "string",
+      "enum": [
+        "unitTest",
+        "linter",
+        "integrationTest",
+        "end2end",
+        "nonFunctionalTest"
+      ],
+      "description": "Test type that can be unitTest, linter, integrationTest end2end or nonFunctionalTest."
+    },
+    "success": {
+      "type": "boolean",
+      "description": "Indicate if the test has been success or failure."
+    },
+    "duration": {
+      "type": "number",
+      "description": "Duration time of the test."
+    },
+    "context": {
+      "type": "object",
+      "description": "Test context",
+      "properties": {
+        "toolUsed": {
+          "type": "string",
+          "description": "Indicate the name of the tool used."
+        },
+        "toolVersion": {
+          "type": "string",
+          "description": "Indicate the version of the tool used."
+        },
+        "environment": {
+          "type": [
+            "string",
+            "object"
+          ],
+          "description": "Indicate the enviroment of the tool used.",
+          "anyOf": [
+            {
+              "type": "object",
+              "required": [
+                "cpu",
+                "ram",
+                "memory",
+                "gpu",
+                "network"
+              ]
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "required": [
+        "toolUsed",
+        "toolVersion",
+        "environment"
+      ]
+    }
+  },
+  "required": [
+    "startDate",
+    "endDate",
+    "project",
+    "commitId",
+    "branch",
+    "testName",
+    "determinist",
+    "testType",
+    "success",
+    "result",
+    "context"
+  ],
+  "if": {
+    "properties": {
+      "testType": {
+        "enum": [
+          "unitTest"
+        ]
+      }
+    }
+  },
+  "then": {
+    "properties": {
+      "result": {
+        "$ref": "#/definitions/unitTest"
+      }
+    }
+  },
+  "else": {
+    "if": {
+      "properties": {
+        "testType": {
+          "enum": [
+            "linter"
+          ]
+        }
+      }
+    },
+    "then": {
+      "properties": {
+        "result": {
+          "type": "boolean"
+        }
+      }
+    },
+    "else": {
+      "if": {
+        "properties": {
+          "testType": {
+            "enum": [
+              "integrationTest"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "$ref": "#/definitions/integrationTest"
+          },
+          "mocks": {
+            "$ref": "#/aux_definitions/addons"
+          }
+        },
+        "required": [
+          "addons"
+        ]
+      },
+      "else": {
+        "if": {
+          "properties": {
+            "testType": {
+              "enum": [
+                "integrationTest"
+              ]
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "result": {
+              "$ref": "#/definitions/integrationTest"
+            },
+            "addons": {
+              "$ref": "#/aux_definitions/addons"
+            }
+          },
+          "required": [
+            "addons"
+          ]
+        },
+        "else": {
+          "if": {
+            "properties": {
+              "testType": {
+                "enum": [
+                  "end2end"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "result": {
+                "$ref": "#/definitions/end2end"
+              },
+              "addons": {
+                "$ref": "#/aux_definitions/addons"
+              }
+            },
+            "required": [
+              "addons"
+            ]
+          },
+          "else": {
+            "if": {
+              "properties": {
+                "testType": {
+                  "enum": [
+                    "nonFunctionalTest"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/nonFunctionalTest"
+                },
+                "addons": {
+                  "$ref": "#/aux_definitions/addons"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "unitTest": {
+      "type": "object",
+      "required": [
+        "coverage",
+        "tests"
+      ],
+      "properties": {
+        "tests": {
+          "$ref": "#/aux_definitions/detailedTests"
+        },
+        "coverage": {
+          "$ref": "#/aux_definitions/detailedTests"
+        }
+      }
+    },
+    "integrationTest": {
+      "type": "object",
+      "required": [
+        "report"
+      ],
+      "properties": {
+        "report": {
+          "$ref": "#/aux_definitions/detailedTests"
+        }
+      }
+    },
+    "end2end": {
+      "type": "object",
+      "required": [
+        "report"
+      ],
+      "properties": {
+        "report": {
+          "$ref": "#/aux_definitions/detailedTests"
+        }
+      }
+    },
+    "nonFunctionalTest": {
+      "type": "object",
+      "required": [
+        "report"
+      ],
+      "properties": {
+        "report": {
+          "$ref": "#/aux_definitions/detailedTests"
+        }
+      }
+    }
+  },
+  "aux_definitions": {
+    "addons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "repo_name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "repo_name",
+          "version"
+        ]
+      }
+    },
+    "detailedTests": {
+      "type": "object",
+      "minProperties": 1
+    }
+  }
+}

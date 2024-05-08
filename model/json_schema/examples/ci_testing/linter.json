@@ -1,0 +1,17 @@
+{
+    "startDate": 1698087500,
+    "endDate": 1698097500,
+    "project": "repo/test",
+    "commitId": "0de83a78334c64250b18b5191f6cbd6b97e77f84",
+    "branch": "master",
+    "testName": "helm lint",
+    "determinist": true,
+    "testType": "linter",
+    "success": true,
+    "result": true,
+    "context": {
+      "toolUsed": "helm",
+      "toolVersion": "1.0.0",
+      "environment": "circle-ci"
+    }
+  }

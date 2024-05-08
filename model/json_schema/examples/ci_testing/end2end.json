@@ -1,0 +1,22 @@
+{
+  "startDate": 1698087500,
+  "endDate": 169809750,
+  "project": "repo/test",
+  "commitId": "0de83a78334c64250b18b5191f6cbd6b97e77f84",
+  "branch": "main",
+  "testName": "end to end tests",
+  "determinist": false,
+  "testType": "end2end",
+  "success": true,
+  "result": {
+    "report": {
+      "testng": {}
+    }
+  },
+  "addons": [],
+  "context": {
+    "toolUsed": "robot framework",
+    "toolVersion": "1.0.0",
+    "environment": "circle-ci"
+  }
+}

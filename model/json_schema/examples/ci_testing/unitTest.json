@@ -1,0 +1,24 @@
+{
+  "startDate": 1698087500,
+  "endDate": 1698097500,
+  "project": "repo/test",
+  "commitId": "0de83a78334c64250b18b5191f6cbd6b97e77f84",
+  "branch": "main",
+  "testName": "Unit Tests",
+  "determinist": true,
+  "testType": "unitTest",
+  "success": true,
+  "result": {
+    "coverage": {
+      "junit": {}
+    },
+    "tests": {
+      "junit": {}
+    }
+  },
+  "context": {
+    "toolUsed": "pytest",
+    "toolVersion": "1.0.0",
+    "environment": "circle-ci"
+  }
+}

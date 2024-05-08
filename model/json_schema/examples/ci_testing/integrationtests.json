@@ -1,0 +1,38 @@
+{
+    "startDate": 1698087500,
+    "endDate": 1698097500,
+    "project": "repo/test",
+    "commitId": "0de83a78334c64250b18b5191f6cbd6b97e77f84",
+    "branch": "main",
+    "testName": "end to end tests",
+    "determinist": false,
+    "testType": "end2end",
+    "success": true,
+    "result": {
+
+      "report": {
+        "testng": {}
+      }
+    },
+    "addons": [{
+        "repo_name": "repo-test",
+        "version": "1.0"
+      }],
+    "context": {
+      "toolUsed": "robot framework",
+      "toolVersion": "1.0.0",
+      "environment": {
+        "cpu": 2,
+        "ram": 1.5,
+        "memory": 2,
+        "gpu": "rtx3070",
+        "network": {
+          "location": "spain",
+          "bandwich": {
+            "upload": "100m",
+            "download": "300m"
+          }
+        }
+      }
+    }
+  }
