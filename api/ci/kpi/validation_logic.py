@@ -26,12 +26,19 @@ def validate_ci_kpi(ci_kpi: dict):
     if errors:
         for error in errors:
             error_counter += 1
-            error_path = error.absolute_path[0] if error.absolute_path else error.schema_path[0]
+            error_path = (
+                error.absolute_path[0] if error.absolute_path else error.schema_path[0]
+            )
 
             if not list_of_errors.get(error_path):
-                list_of_errors[error_path] = {"error_reasons": [error.message], "schema_to_satisfy": error.schema}
+                list_of_errors[error_path] = {
+                    "error_reasons": [error.message],
+                    "schema_to_satisfy": error.schema,
+                }
             else:
                 list_of_errors[error_path]["error_reasons"].append(error.message)
 
-        raise CIValidationException({"error_counter": error_counter, "errors": list_of_errors})
+        raise CIValidationException(
+            {"error_counter": error_counter, "errors": list_of_errors}
+        )
     return response
