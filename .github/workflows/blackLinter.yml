@@ -28,8 +28,8 @@ jobs:
       run: |
         echo "startDate=$(date +%s)" >> $GITHUB_ENV
         echo "black_version=$(black --version | head -n 1 | awk '{print $2}')"  >> $GITHUB_ENV
-        echo "startDate=$" >> $GITHUB_ENV
         echo "endDate=$(date +%s)" >> $GITHUB_ENV
+        echo "result=true" >> $GITHUB_ENV
         
     - name: Send CI KPI
       run: |
@@ -37,15 +37,15 @@ jobs:
           \"startDate\": $startDate,
           \"endDate\": $endDate,
           \"project\": \"Luis-GA/CI-KPI\",
-          \"commitId\": \"${{ env.sha_short }}\",
-          \"branch\": \"${{ env.branch }}\",
+          \"commitId\": \"$commit_id\",
+          \"branch\": \"$branch\",
           \"testName\": \"black lint\",
           \"determinist\": true,
           \"testType\": \"linter\",
-          \"success\": true,
-          \"result\": true,
+          \"success\": $result,
+          \"result\": $result,
           \"context\": {
-            \"toolUsed\": "black\",
+            \"toolUsed\": \"black\",
             \"toolVersion\": \"$black_version\",
             \"environment\": \"Github Actions\"
           }
