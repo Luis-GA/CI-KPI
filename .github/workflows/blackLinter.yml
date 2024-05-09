@@ -21,7 +21,8 @@ jobs:
     - name: Set environment variables
       run: |
         echo "COMMIT_ID=${GITHUB_SHA}" >> $GITHUB_ENV
-        echo "BRANCH=${GITHUB_BASE | sed 's/refs\/heads\///'}" >> $GITHUB_ENV
+        echo "GITHUB_BASE=${GITHUB_BASE}" >> $GITHUB_ENV
+        echo "BRANCH=$(echo $GITHUB_BASE | sed 's/refs\/heads\///'})" >> $GITHUB_ENV
 
     - name: Use environment variables
       run: |
