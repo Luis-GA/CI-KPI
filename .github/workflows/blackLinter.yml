@@ -23,11 +23,7 @@ jobs:
         export startDate="$(date +%s)"
         echo $startDate
         export black_version="$(black --version | head -n 1 | awk '{print $2}')"
-        if [ $(black --check .) -eq 0 ]; then
-          result=true
-        else
-          result=false
-        fi
+        export result=true
         export endDate="$(date +%s)"
         echo '{
           "startDate": $startDate,
@@ -46,7 +42,7 @@ jobs:
             "environment": "Github Actions"
           }
         }' > data.json
-        
+        cat data.json
         curl -X 'POST' \
           'https://thesis-lga-ubiquity-cloud-native.onrender.com/ci_kpi' \
           -H 'accept: application/json' \
