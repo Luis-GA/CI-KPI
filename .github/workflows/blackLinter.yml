@@ -20,7 +20,14 @@ jobs:
         pip install black
     - name: Analysing the code with black
       run: |
-        black . --check
+        export startDate="$(date +%s)"
+        export black_version="$(black --version | head -n 1 | awk '{print $2}')"
+        if [ $(black --check .) -eq 0 ]; then
+          result=true
+        else
+          result=false
+        fi
+        export endDate="$(date +%s)"
     - name: Send CI-KPI
       run: |
         curl -X 'POST' \
@@ -28,11 +35,11 @@ jobs:
           -H 'accept: application/json' \
           -H 'Content-Type: application/json' \
           -d '{
-          "startDate": 1698087500,
-          "endDate": 1698097500,
+          "startDate": $startDate,
+          "endDate": $endDate,
           "project": "Luis-GA/CI-KPI",
-          "commitId": "0de83a78334c64250b18b5191f6cbd6b97e77f84",
-          "branch": "master",
+          "commitId": "${{ env.sha_short }}",
+          "branch": "${{ env.branch }}",
           "testName": "black lint",
           "determinist": true,
           "testType": "linter",
@@ -40,7 +47,13 @@ jobs:
           "result": true,
           "context": {
             "toolUsed": "black",
-            "toolVersion": "1.0.0",
+            "toolVersion": "$black_version",
             "environment": "Github Actions"
           }
         }'
+    - name: Evaluate results
+      run: |
+        if [ "$result" == "false" ]; then
+            exit 1
+        fi
+        
