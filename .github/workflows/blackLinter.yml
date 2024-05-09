@@ -29,9 +29,6 @@ jobs:
           result=false
         fi
         export endDate="$(date +%s)"
-    - name: Send CI-KPI
-      run: |
-        echo $startDate
         curl -X 'POST' \
           'https://thesis-lga-ubiquity-cloud-native.onrender.com/ci_kpi' \
           -H 'accept: application/json' \
@@ -53,9 +50,6 @@ jobs:
             "environment": "Github Actions"
           }
         }'
-    - name: Evaluate results
-      run: |
-        echo $startDate
         if [ "$result" == "false" ]; then
             exit 1
         fi
