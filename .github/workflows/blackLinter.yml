@@ -29,11 +29,7 @@ jobs:
           result=false
         fi
         export endDate="$(date +%s)"
-        curl -X 'POST' \
-          'https://thesis-lga-ubiquity-cloud-native.onrender.com/ci_kpi' \
-          -H 'accept: application/json' \
-          -H 'Content-Type: application/json' \
-          -d '{
+        echo '{
           "startDate": $startDate,
           "endDate": $endDate,
           "project": "Luis-GA/CI-KPI",
@@ -49,7 +45,13 @@ jobs:
             "toolVersion": "$black_version",
             "environment": "Github Actions"
           }
-        }'
+        }' > data.json
+        
+        curl -X 'POST' \
+          'https://thesis-lga-ubiquity-cloud-native.onrender.com/ci_kpi' \
+          -H 'accept: application/json' \
+          -H 'Content-Type: application/json' \
+          -d data.json
         if [ "$result" == "false" ]; then
             exit 1
         fi
