@@ -20,13 +20,13 @@ jobs:
         pip install black
     - name: Set environment variables
       run: |
-        echo "GITHUB_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
-        echo "GITHUB_REF=${GITHUB_REF}" >> $GITHUB_ENV
+        echo "COMMIT_ID=${GITHUB_SHA}" >> $GITHUB_ENV
+        echo "BRANCH=${GITHUB_REF | rev | cut -d/ -f1 | rev}" >> $GITHUB_ENV
 
     - name: Use environment variables
       run: |
-        echo "Current commit: $GITHUB_SHA"
-        echo "Current branch: $GITHUB_REF"
+        echo "Current commit: $COMMIT_ID"
+        echo "Current branch: $BRANCH"
     - name: Analysing the code with black
       run: |
         export startDate="$(date +%s)"
