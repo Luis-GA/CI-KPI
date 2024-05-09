@@ -21,6 +21,7 @@ jobs:
     - name: Analysing the code with black
       run: |
         export startDate="$(date +%s)"
+        echo $startDate
         export black_version="$(black --version | head -n 1 | awk '{print $2}')"
         if [ $(black --check .) -eq 0 ]; then
           result=true
@@ -30,6 +31,7 @@ jobs:
         export endDate="$(date +%s)"
     - name: Send CI-KPI
       run: |
+        echo $startDate
         curl -X 'POST' \
           'https://thesis-lga-ubiquity-cloud-native.onrender.com/ci_kpi' \
           -H 'accept: application/json' \
@@ -53,6 +55,7 @@ jobs:
         }'
     - name: Evaluate results
       run: |
+        echo $startDate
         if [ "$result" == "false" ]; then
             exit 1
         fi
