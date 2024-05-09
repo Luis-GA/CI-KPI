@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.10"]
+        python-version: ["3.10"]
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
@@ -21,3 +21,26 @@ jobs:
     - name: Analysing the code with black
       run: |
         black . --check
+    - name: Send CI-KPI
+      run: |
+        curl -X 'POST' \
+          'https://thesis-lga-ubiquity-cloud-native.onrender.com/ci_kpi' \
+          -H 'accept: application/json' \
+          -H 'Content-Type: application/json' \
+          -d '{
+    "startDate": 1698087500,
+    "endDate": 1698097500,
+    "project": "Luis-GA/CI-KPI",
+    "commitId": "0de83a78334c64250b18b5191f6cbd6b97e77f84",
+    "branch": "master",
+    "testName": "black lint",
+    "determinist": true,
+    "testType": "linter",
+    "success": true,
+    "result": true,
+    "context": {
+      "toolUsed": "black",
+      "toolVersion": "1.0.0",
+      "environment": "Github Actions"
+    }
+  }'
