@@ -28,19 +28,19 @@ jobs:
           -H 'accept: application/json' \
           -H 'Content-Type: application/json' \
           -d '{
-    "startDate": 1698087500,
-    "endDate": 1698097500,
-    "project": "Luis-GA/CI-KPI",
-    "commitId": "0de83a78334c64250b18b5191f6cbd6b97e77f84",
-    "branch": "master",
-    "testName": "black lint",
-    "determinist": true,
-    "testType": "linter",
-    "success": true,
-    "result": true,
-    "context": {
-      "toolUsed": "black",
-      "toolVersion": "1.0.0",
-      "environment": "Github Actions"
-    }
-  }'
+          "startDate": 1698087500,
+          "endDate": 1698097500,
+          "project": "Luis-GA/CI-KPI",
+          "commitId": "0de83a78334c64250b18b5191f6cbd6b97e77f84",
+          "branch": "master",
+          "testName": "black lint",
+          "determinist": true,
+          "testType": "linter",
+          "success": true,
+          "result": true,
+          "context": {
+            "toolUsed": "black",
+            "toolVersion": "1.0.0",
+            "environment": "Github Actions"
+          }
+        }'
