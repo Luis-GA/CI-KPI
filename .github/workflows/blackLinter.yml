@@ -21,7 +21,7 @@ jobs:
     - name: Set environment variables
       run: |
         echo "COMMIT_ID=${GITHUB_SHA}" >> $GITHUB_ENV
-        echo "BRANCH=${GITHUB_BASE_REF}" >> $GITHUB_ENV
+        echo "BRANCH=${GITHUB_HEAD_REF}" >> $GITHUB_ENV
 
     - name: Use environment variables
       run: |
