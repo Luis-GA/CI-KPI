@@ -25,23 +25,23 @@ jobs:
         export black_version="$(black --version | head -n 1 | awk '{print $2}')"
         export result=true
         export endDate="$(date +%s)"
-        echo '{
-          "startDate": $startDate,
-          "endDate": $endDate,
-          "project": "Luis-GA/CI-KPI",
-          "commitId": "${{ env.sha_short }}",
-          "branch": "${{ env.branch }}",
-          "testName": "black lint",
-          "determinist": true,
-          "testType": "linter",
-          "success": true,
-          "result": true,
-          "context": {
+        echo "{
+          \"startDate\": $startDate,
+          \"endDate\": $endDate,
+          \"project\": \"Luis-GA/CI-KPI\",
+          \"commitId\": \"${{ env.sha_short }}\",
+          \"branch\": \"${{ env.branch }}\",
+          \"testName\": \"black lint\",
+          \"determinist\": true,
+          \"testType\": \"linter\",
+          \"success\": true,
+          \"result\": true,
+          \"context\": {
             "toolUsed": "black",
             "toolVersion": "$black_version",
             "environment": "Github Actions"
           }
-        }' > data.json
+        }" > data.json
         cat data.json
         curl -X 'POST' \
           'https://thesis-lga-ubiquity-cloud-native.onrender.com/ci_kpi' \
