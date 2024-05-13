@@ -1,5 +1,5 @@
-fastapi>=0.68.0,<0.69.0
-pydantic>=1.8.0,<2.0.0
+fastapi==0.111.0
+pydantic==2.7
 uvicorn>=0.15.0,<0.16.0
 motor==2.5.1
 dnspython==2.4.2
