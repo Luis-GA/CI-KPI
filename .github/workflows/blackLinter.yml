@@ -52,7 +52,7 @@ jobs:
         }" > data.json
         cat data.json
         curl -X 'POST' \
-          'https://thesis-lga-ubiquity-cloud-native.onrender.com/ci_kpi' \
+          'https://observability-ci-workflows.onrender.com/ci_kpi' \
           -H 'accept: application/json' \
           -H 'Content-Type: application/json' \
           -d @data.json
