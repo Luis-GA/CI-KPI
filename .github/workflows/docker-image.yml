@@ -1,0 +1,63 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set environment variables
+      run: |
+        echo "commit_id=${GITHUB_SHA}" >> $GITHUB_ENV
+        echo "branch=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+        echo "repository=${GITHUB_REPOSITORY}" >> $GITHUB_ENV
+
+    - name: Build the Docker image
+      run: |
+        echo "startDate=$(date +%s)" >> $GITHUB_ENV
+        echo "docker_version=$(docker version --format '{{.Client.APIVersion}}')"  >> $GITHUB_ENV
+        tag=$(date +%s)
+        echo "tag=$tag" >> $GITHUB_ENV
+        docker build . --file Containerfile --tag ubiquitycloud/ci-kpi:$tag
+        echo "endDate=$(date +%s)" >> $GITHUB_ENV
+        echo "result=true" >> $GITHUB_ENV
+        
+    - name: Send CI KPI
+      run: |
+        echo "{
+          \"startDate\": $startDate,
+          \"endDate\": $endDate,
+          \"project\": \"Luis-GA/CI-KPI\",
+          \"commitId\": \"$commit_id\",
+          \"branch\": \"$branch\",
+          \"testName\": \"Docker Build\",
+          \"determinist\": true,
+          \"testType\": \"nonFunctionalTest\",
+          \"success\": $result,
+          \"result\": $result,
+          \"context\": {
+            \"toolUsed\": \"docker\",
+            \"toolVersion\": \"$docker_version\",
+            \"environment\": \"Github Actions\"
+          }
+        }" > data.json
+        cat data.json
+        curl -X 'POST' \
+          'https://observability-ci-workflows.onrender.com/ci_kpi' \
+          -H 'accept: application/json' \
+          -H 'Content-Type: application/json' \
+          -d @data.json
+          
+    - name: Evaluate validator
+      run: |
+        if [ "$result" == "false" ]; then
+            exit 1
+        fi
