@@ -26,9 +26,9 @@ jobs:
         echo "docker_version=$(docker version --format '{{.Client.APIVersion}}')"  >> $GITHUB_ENV
         tag=$(date +%s)
         echo "tag=$tag" >> $GITHUB_ENV
-        docker build . --file Containerfile --tag ubiquitycloud/ci-kpi:$tag
+        docker build . --file Containerfile --tag ubiquitycloud/ci-kpi:$tag --progress=plain &> build.log
         echo "endDate=$(date +%s)" >> $GITHUB_ENV
-        echo "result=true" >> $GITHUB_ENV
+        echo "result=$(cat build.log)" >> $GITHUB_ENV
         
     - name: Send CI KPI
       run: |
@@ -42,7 +42,7 @@ jobs:
           \"determinist\": true,
           \"testType\": \"nonFunctionalTest\",
           \"success\": $result,
-          \"result\": $result,
+          \"result\": {\"report\": \"$result\"},
           \"context\": {
             \"toolUsed\": \"docker\",
             \"toolVersion\": \"$docker_version\",
