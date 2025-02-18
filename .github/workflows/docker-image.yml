@@ -33,6 +33,11 @@ jobs:
         tag=$(date +%s)
         echo "tag=$tag" >> $GITHUB_ENV
         docker build . --file Containerfile --tag  ${{ secrets.DOCKERHUB_USERNAME }}/ci-kpi:$tag
+        if [ $? -eq 0 ]; then
+          echo "result=true" >> $GITHUB_ENV
+        else
+          echo "result=false" >> $GITHUB_ENV
+        fi
         echo "endDate=$(date +%s)" >> $GITHUB_ENV
         echo "result=$(cat build.log)" >> $GITHUB_ENV
 
