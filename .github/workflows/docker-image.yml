@@ -20,15 +20,26 @@ jobs:
         echo "branch=${GITHUB_REF_NAME}" >> $GITHUB_ENV
         echo "repository=${GITHUB_REPOSITORY}" >> $GITHUB_ENV
 
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
     - name: Build the Docker image
       run: |
         echo "startDate=$(date +%s)" >> $GITHUB_ENV
         echo "docker_version=$(docker version --format '{{.Client.APIVersion}}')"  >> $GITHUB_ENV
         tag=$(date +%s)
         echo "tag=$tag" >> $GITHUB_ENV
-        docker build . --file Containerfile --tag ubiquitycloud/ci-kpi:$tag --progress=plain &> build.log
+        docker build . --file Containerfile --tag  ${{ secrets.DOCKERHUB_USERNAME }}/ci-kpi:$tag
         echo "endDate=$(date +%s)" >> $GITHUB_ENV
         echo "result=$(cat build.log)" >> $GITHUB_ENV
+
+        
+    - name: Push Docker image
+      run: |
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/ci-kpi:$tag
         
     - name: Send CI KPI
       run: |
@@ -42,7 +53,7 @@ jobs:
           \"determinist\": true,
           \"testType\": \"nonFunctionalTest\",
           \"success\": $result,
-          \"result\": {\"report\": \"$result\"},
+          \"result\": {\"report\": false},
           \"context\": {
             \"toolUsed\": \"docker\",
             \"toolVersion\": \"$docker_version\",
