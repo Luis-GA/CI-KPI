@@ -32,7 +32,7 @@ jobs:
         echo "docker_version=$(docker version --format '{{.Client.APIVersion}}')"  >> $GITHUB_ENV
         tag=$(date +%s)
         echo "tag=$tag" >> $GITHUB_ENV
-        if docker build . --file Containerfile --tag  ${{ secrets.DOCKERHUB_USERNAME }}/ci-kpi:$tag; then
+        if docker build . --file Containerfile --tag  ${{ secrets.DOCKERHUB_USERNAME }}/ci-kpi:latest; then
             echo "result=true" >> $GITHUB_ENV
         else
             echo "result=false" >> $GITHUB_ENV
@@ -41,7 +41,7 @@ jobs:
         
     - name: Push Docker image
       run: |
-        docker push ${{ secrets.DOCKERHUB_USERNAME }}/ci-kpi:$tag
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/ci-kpi:latest
         
     - name: Send CI KPI
       run: |
