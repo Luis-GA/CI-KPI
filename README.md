@@ -164,3 +164,10 @@ The implications consist of describing a process, coded in a cloud-agnostic tool
 * Acquiring the knowledge stage by comparing, adding consequences, and making connections above the CI KPIs stored in the API using the querying and transformation utilities described Get implications
 
 After the Knowledge stage, based on the stakeholder bias, it is possible to make data-driven decisions that could improve the project performance significantly.
+
+# How to start
+You need a MongoDB instance to store your CI KPIs.
+An then, you only need to run:
+```bash
+docker run -p 80:80 -e MONGO_URI='<URI>' ubiquitycloud/ci-kpi
+```
