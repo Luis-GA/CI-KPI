@@ -1,6 +1,16 @@
 name: BlackLinter
 
-on: [push]
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - '**.py'
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - '**.py'
 
 jobs:
   build:
@@ -26,8 +36,13 @@ jobs:
 
     - name: Analysing the code with black
       run: |
-        echo "startDate=$(date +%s)" >> $GITHUB_ENV
         echo "black_version=$(black --version | head -n 1 | awk '{print $2}')"  >> $GITHUB_ENV
+        echo "startDate=$(date +%s)" >> $GITHUB_ENV
+        if black . --check ; then
+                    echo "result=true" >> $GITHUB_ENV
+                else
+                    echo "result=false" >> $GITHUB_ENV
+                fi
         echo "endDate=$(date +%s)" >> $GITHUB_ENV
         echo "result=true" >> $GITHUB_ENV
         
