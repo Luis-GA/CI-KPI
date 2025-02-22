@@ -55,7 +55,7 @@ jobs:
           \"determinist\": true,
           \"testType\": \"nonFunctionalTest\",
           \"success\": $result,
-          \"result\": {\"report\": false},
+          \"result\": {\"report\": {\"content\": \"\"}},
           \"context\": {
             \"toolUsed\": \"docker\",
             \"toolVersion\": \"$docker_version\",
@@ -74,7 +74,7 @@ jobs:
       env:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-        DOCKERHUB_REPOSITORY: peterevans/dockerhub-description
+        DOCKERHUB_REPOSITORY: ${{ secrets.DOCKERHUB_USERNAME }}/ci-kpi
 
     - name: Evaluate validator
       run: |
