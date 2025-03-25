@@ -1,9 +1,5 @@
-from model.base_model import AuxBaseModel, Field, computed_field
+from model.base_model import AuxBaseModel, Field, computed_field, CI_KPI_JSON_SCHEMA
 from typing import Union
-import json
-
-CI_KPI_RELATIVE_PATH = "././model/json_schema/ci_testing.json"
-
 
 class ADDONS(AuxBaseModel):
     version: str
@@ -28,7 +24,3 @@ class CI_KPI(AuxBaseModel):
     @property
     def duration(self) -> int:
         return self.endDate - self.startDate
-
-
-with open(CI_KPI_RELATIVE_PATH) as f:
-    CI_KPI_JSON_SCHEMA = json.load(f)

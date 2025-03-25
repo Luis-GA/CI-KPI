@@ -1,11 +1,11 @@
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
 
 from api.ci.kpi import endpoints as ci_kpi_imports
 
 app = FastAPI(
-    title="CICD Observability  in Cloud Native",
+    title="CICD Observability in Cloud Native",
     description="OpenAPI to manage the entire CICD Observability",
     summary="Server Management",
     version="0.0.1",
@@ -21,19 +21,23 @@ app = FastAPI(
 )
 
 app.include_router(ci_kpi_imports.router)
-
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/", include_in_schema=False)
 def redirect_to_openapi():
     return RedirectResponse(url="/docs")
 
-
 @app.get("/health")
 def health_check():
     return {"status": "Success"}
 
-
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(app, host="0.0.0.0", port=8080)

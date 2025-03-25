@@ -8,4 +8,4 @@ MONGO_URI = os.environ.get("MONGO_URI")
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URI)
 client.get_io_loop = asyncio.get_running_loop
 
-database = client.thesis  # TODO: change this database
+database = client.thesis
